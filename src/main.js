@@ -9,8 +9,17 @@ import { createMarkup } from './js/render-functions';
 
 const formElem = document.querySelector('.form');
 const imageList = document.querySelector('.gallery');
-const loader = document.querySelector('.loader');
+const searchLoader = document.getElementById('search-loader');
+const loadMoreLoader = document.getElementById('load-more-loader');
 const loadMore = document.querySelector('.js-load-more');
+
+function showLoader(loader) {
+  loader.classList.add('is-open');
+}
+
+function hideLoader(loader) {
+  loader.classList.remove('is-open');
+}
 
 let currentQuery = '';
 let currentPage = 1;
@@ -20,7 +29,6 @@ loadMore.addEventListener('click', onLoadMore);
 
 function handleSubmit(event) {
   event.preventDefault();
-  imageList.innerHTML = '';
   currentQuery = event.target.elements['search-input'].value
     .trim()
     .toLowerCase();
@@ -36,19 +44,29 @@ function handleSubmit(event) {
 
   currentPage = 1;
   formElem.reset();
-  fetchImages();
+  imageList.innerHTML = '';
+  loadMore.classList.add('js-more-hidden');
+  fetchImages('search');
 }
 
 function onLoadMore() {
   currentPage += 1;
-  fetchImages();
+  loadMore.classList.add('js-more-hidden');
+  fetchImages('loadMore');
 }
 
-function fetchImages() {
-  loader.classList.add('is-open');
+function fetchImages(type) {
+  if (type === 'search') {
+    showLoader(searchLoader);
+  } else if (type === 'loadMore') {
+    showLoader(loadMoreLoader);
+  }
+
   searchImage(currentQuery, currentPage)
     .then(data => {
-      loader.classList.remove('is-open');
+      hideLoader(searchLoader);
+      hideLoader(loadMoreLoader);
+
       if (!data.hits.length) {
         if (currentPage === 1) {
           iziToast.error({
@@ -94,7 +112,8 @@ function fetchImages() {
       }
     })
     .catch(error => {
-      loader.classList.remove('is-open');
+      hideLoader(searchLoader);
+      hideLoader(loadMoreLoader);
       loadMore.classList.add('js-more-hidden');
       iziToast.error({
         title: 'Error',

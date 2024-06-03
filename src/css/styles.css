@@ -189,8 +189,17 @@
 
 .button-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin: 20px 0;
+  margin: 10px 0;
+}
+
+.loader {
+  display: none;
+}
+
+.loader.is-open {
+  display: block;
 }
 
 .js-more-hidden {
