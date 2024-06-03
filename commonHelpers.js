@@ -1,9 +1,9 @@
-import{a as p,i as c,S as y}from"./assets/vendor-c493984e.js";(function(){const s=document.createElement("link").relList;if(s&&s.supports&&s.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))o(e);new MutationObserver(e=>{for(const r of e)if(r.type==="childList")for(const l of r.addedNodes)l.tagName==="LINK"&&l.rel==="modulepreload"&&o(l)}).observe(document,{childList:!0,subtree:!0});function i(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerPolicy&&(r.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?r.credentials="include":e.crossOrigin==="anonymous"?r.credentials="omit":r.credentials="same-origin",r}function o(e){if(e.ep)return;e.ep=!0;const r=i(e);fetch(e.href,r)}})();const L="https://pixabay.com/api/",b="44079698-e6186d09374e2a24bdfa7da89";async function S(t,s=1){const{data:i}=await p.get(L,{params:{key:b,page:s,per_page:15,q:t,image_type:"photo",orientation:"horizontal",safesearch:"true"}});return i}function v(t){return t.map(({webformatURL:s,largeImageURL:i,tags:o,likes:e,views:r,comments:l,downloads:h})=>`<li class="gallery-item">
-	<a class="gallery-link" href="${i}">
+import{a as b,i as d,S as E}from"./assets/vendor-c493984e.js";(function(){const o=document.createElement("link").relList;if(o&&o.supports&&o.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))l(e);new MutationObserver(e=>{for(const t of e)if(t.type==="childList")for(const a of t.addedNodes)a.tagName==="LINK"&&a.rel==="modulepreload"&&l(a)}).observe(document,{childList:!0,subtree:!0});function s(e){const t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?t.credentials="include":e.crossOrigin==="anonymous"?t.credentials="omit":t.credentials="same-origin",t}function l(e){if(e.ep)return;e.ep=!0;const t=s(e);fetch(e.href,t)}})();const S="https://pixabay.com/api/",j="44079698-e6186d09374e2a24bdfa7da89";async function v(r,o=1){const{data:s}=await b.get(S,{params:{key:j,page:o,per_page:15,q:r,image_type:"photo",orientation:"horizontal",safesearch:"true"}});return s}function w(r){return r.map(({webformatURL:o,largeImageURL:s,tags:l,likes:e,views:t,comments:a,downloads:L})=>`<li class="gallery-item">
+	<a class="gallery-link" href="${s}">
 		<img
             class="gallery-img"
-            src="${s}"
-            alt="${o}"
+            src="${o}"
+            alt="${l}"
         />
         <ul class="gallery-info">
          <li class="galery-info-item">
@@ -12,17 +12,17 @@ import{a as p,i as c,S as y}from"./assets/vendor-c493984e.js";(function(){const 
         </li>
         <li class="gallery-info-item">
             <h2 class="gallery-info-title">Views</h2>
-            <p class="gallery-info-text">${r}</p>
+            <p class="gallery-info-text">${t}</p>
         </li>
          <li class="gallery-info-item">
             <h2 class="gallery-info-title">Comments</h2>
-            <p class="gallery-info-text">${l}</p>
+            <p class="gallery-info-text">${a}</p>
         </li>
         <li class="gallery-info-item">
             <h2 class="gallery-info-title">Downloads</h2>
-            <p class="gallery-info-text">${h}</p>
+            <p class="gallery-info-text">${L}</p>
         </li>
      </ul>
 	</a>
-</li>`).join("")}const f=document.querySelector(".form"),u=document.querySelector(".gallery"),d=document.querySelector(".loader"),a=document.querySelector(".js-load-more");let m="",n=1;f.addEventListener("submit",q);a.addEventListener("click",x);function q(t){if(t.preventDefault(),u.innerHTML="",m=t.target.elements["search-input"].value.trim().toLowerCase(),!m){c.error({title:"Error",message:"Please enter a search query",position:"topRight"});return}n=1,f.reset(),g()}function x(){n+=1,g()}function g(){d.classList.add("is-open"),S(m,n).then(t=>{if(d.classList.remove("is-open"),!t.hits.length)n===1&&c.error({title:"Error",message:"Sorry, there are no images matching your search query. Please try again!",position:"topRight"}),a.classList.add("js-more-hidden");else{const s=v(t.hits);if(u.insertAdjacentHTML("beforeend",s),new y(".gallery-item a",{captionsData:"alt",captionDelay:250}).refresh(),n>1){const o=document.querySelectorAll(".gallery-item");if(o.length>0){const{height:e}=o[0].getBoundingClientRect();window.scrollBy({top:e*2,behavior:"smooth"})}}t.totalHits>u.children.length?a.classList.remove("js-more-hidden"):(a.classList.add("js-more-hidden"),c.info({title:"Info",message:"We're sorry, but you've reached the end of search results.",position:"topRight"}))}}).catch(t=>{d.classList.remove("is-open"),a.classList.add("js-more-hidden"),c.error({title:"Error",message:`An error occurred: ${t.message}`,position:"topRight"})})}
+</li>`).join("")}const p=document.querySelector(".form"),f=document.querySelector(".gallery"),m=document.getElementById("search-loader"),u=document.getElementById("load-more-loader"),i=document.querySelector(".js-load-more");function g(r){r.classList.add("is-open")}function c(r){r.classList.remove("is-open")}let h="",n=1;p.addEventListener("submit",x);i.addEventListener("click",M);function x(r){if(r.preventDefault(),h=r.target.elements["search-input"].value.trim().toLowerCase(),!h){d.error({title:"Error",message:"Please enter a search query",position:"topRight"});return}n=1,p.reset(),f.innerHTML="",i.classList.add("js-more-hidden"),y("search")}function M(){n+=1,i.classList.add("js-more-hidden"),y("loadMore")}function y(r){r==="search"?g(m):r==="loadMore"&&g(u),v(h,n).then(o=>{if(c(m),c(u),!o.hits.length)n===1&&d.error({title:"Error",message:"Sorry, there are no images matching your search query. Please try again!",position:"topRight"}),i.classList.add("js-more-hidden");else{const s=w(o.hits);if(f.insertAdjacentHTML("beforeend",s),new E(".gallery-item a",{captionsData:"alt",captionDelay:250}).refresh(),n>1){const e=document.querySelectorAll(".gallery-item");if(e.length>0){const{height:t}=e[0].getBoundingClientRect();window.scrollBy({top:t*2,behavior:"smooth"})}}o.totalHits>f.children.length?i.classList.remove("js-more-hidden"):(i.classList.add("js-more-hidden"),d.info({title:"Info",message:"We're sorry, but you've reached the end of search results.",position:"topRight"}))}}).catch(o=>{c(m),c(u),i.classList.add("js-more-hidden"),d.error({title:"Error",message:`An error occurred: ${o.message}`,position:"topRight"})})}
 //# sourceMappingURL=commonHelpers.js.map
